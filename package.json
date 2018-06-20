@@ -8,7 +8,6 @@
     "url": "https://github.com/cult-of-coders/react-molecule.git"
   },
   "scripts": {
-    "clean": "rimraf dist coverage",
     "compile": "tsc",
     "pretest": "npm run compile",
     "test": "npm run testonly --",
@@ -18,7 +17,7 @@
     "testonly": "mocha --reporter spec --full-trace ./dist/test/*.js",
     "coverage": "node ./node_modules/istanbul/lib/cli.js cover _mocha -- --full-trace ./dist/test/*.js",
     "postcoverage": "remap-istanbul --input coverage/coverage.raw.json --type lcovonly --output coverage/lcov.info",
-    "prepublishOnly": "npm run clean && npm run compile"
+    "prepublishOnly": "npm run compile"
   },
   "peerDependencies": {
     "react": "16.x"
