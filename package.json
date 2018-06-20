@@ -1,0 +1,45 @@
+{
+  "name": "react-molecule",
+  "version": "0.0.1",
+  "description": "React Molecule is a bridge between components",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cult-of-coders/react-molecule.git"
+  },
+  "scripts": {
+    "clean": "rimraf dist coverage",
+    "compile": "tsc",
+    "pretest": "npm run compile",
+    "test": "npm run testonly --",
+    "posttest": "npm run lint",
+    "lint": "tslint --type-check --project ./tsconfig.json ./src/**/*",
+    "watch": "tsc -w",
+    "testonly": "mocha --reporter spec --full-trace ./dist/test/*.js",
+    "coverage": "node ./node_modules/istanbul/lib/cli.js cover _mocha -- --full-trace ./dist/test/*.js",
+    "postcoverage": "remap-istanbul --input coverage/coverage.raw.json --type lcovonly --output coverage/lcov.info",
+    "prepublishOnly": "npm run clean && npm run compile"
+  },
+  "peerDependencies": {
+    "react": "16.x"
+  },
+  "devDependencies": {
+    "@types/react": "16.3.9",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "mobx": "4.1.1",
+    "mobx-react": "^5.0.0",
+    "mocha": "^3.3.0",
+    "react": "16.3.1",
+    "tslint": "^5.2.0",
+    "typescript": "^2.3.2"
+  },
+  "typings": "dist/index.d.ts",
+  "typescript": {
+    "definition": "dist/index.d.ts"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "eventemitter3": "^3.1.0"
+  }
+}
