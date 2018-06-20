@@ -1,10 +1,10 @@
-# Concepts
+# React Molecule - Concepts
 
-Introducing the concepts of this framework, this is the first phase into understanding this concept.
+Introducing the concepts of this framework, this is the first phase into understanding the molecule.
 
 ## Molecule
 
-The `Molecule` is the component that makes communication easier between the children:
+The `Molecule` is the React Component that makes communication easier between the children:
 
 ```jsx
 import { Molecule } from 'react-molecule';
@@ -215,3 +215,5 @@ const UserPage = () => {
 Pretty straight forward, right? There are ofcourse, many subtle and interesting aspects of the `Registry` however, they will be explored later on.
 
 The next steps into understanding the molecule is to see the components play! So let's start playing.
+
+## [Back to Table of Contents](./index.md)

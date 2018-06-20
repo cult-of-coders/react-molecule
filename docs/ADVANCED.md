@@ -1,8 +1,8 @@
-# Advanced Concepts
+# React Molecule - Advanced Concepts
 
 As we evolve our app and write hackable, configurable modules, we need to dive deeper and understand more about the power of the molecule.
 
-### Configurable Molecules
+## Configurable Molecules
 
 You could also pass configuration to your molecules, configuration that can be read by agents or atoms.
 
@@ -30,7 +30,7 @@ const UserPage = ({ molecule }) => {
 
 Nothing stops you of using `store` to define the theme in there, and if you use `observable` from it you can have it reactive with ease, howevs, we thought that there should be another dimension to the molecule for this kind of data. `store` can change, `config` shouldn't, that's how we can think about it.
 
-### Agent Lifecycle
+## Agent Lifecycle
 
 When the molecule comes alive it creates the agents and injects `molecule` into them.
 
@@ -49,7 +49,7 @@ So:
 - init() (Do your thing)
 - clean() (Don't leave anything hanging)
 
-### Inter-communication between agents
+## Inter-communication between agents
 
 Now things do start to get interesting. The reason why we decoupled the logic from the molecule itself through agents, is that agents can be coded in such a way that they allow their behavior to be manipulated by other agents.
 
@@ -140,7 +140,7 @@ a data-grid, where you have: search, pagination, per-page, filters, sorting. You
 
 Isn't this beautiful? We now have a system that is inter-connected, can manipulate each other elegantly and on top of everything the components used are completely hackable, let's find out how.
 
-### Advanced Registry Usage
+## Advanced Registry Usage
 
 We talked about the `Registry` concept, let's dive a bit deeper into it.
 
@@ -196,7 +196,7 @@ mole(() => {
 })(Datagrid);
 ```
 
-### Some tips & tricks
+## Some tips & tricks
 
 Sometimes using children as function to inject the property can be very convenient:
 
@@ -214,7 +214,7 @@ Sometimes using children as function to inject the property can be very convenie
 </WithAgent>
 ```
 
-### Debugging
+## Debugging
 
 Debugging happens for events being listened to, dispatched, and being handled.
 
@@ -237,7 +237,7 @@ This can be of tremendous help in development.
 
 Please note that any molecule with debug `true` will automatically make agents in debug mode. So you don't have to specify it for each agent.
 
-### Let's talk Events
+## Let's talk Events
 
 Events are a first class citizen and often, when you work with events and you have many of them, and you don't apply healthy patterns to it, your app can become a mess, hard to maintain, too much logic playing everywhere, and you cannot understand it easily because many factors are at play.
 
@@ -297,7 +297,7 @@ This is a very elegant way of dealing with all the problems that may arise from 
 
 In our examples inside the README we did not follow these principles because we wanted to make it easy to understand the concepts. However when you're building your app, be sure to follow them
 
-### Talking from anywhere
+## Talking from anywhere
 
 As we discussed communication is focused on molecule level, but if you do want to easily communicate through a global 'channel', then you can use the Dispatcher:
 
@@ -312,3 +312,5 @@ Emitter.emit('yyy');
 ```
 
 Just make sure that you de-register events in your `componentWillUnmount`, de-registration for the global `Emitter` is not done automatically when a molecule gets killed.
+
+## [Back to Table of Contents](./index.md)

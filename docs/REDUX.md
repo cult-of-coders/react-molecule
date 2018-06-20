@@ -106,3 +106,5 @@ class TodoList extends Component {
 This is just an example, you can implement Redux in many other ways with `molecule`, this is just an example to show you the sheer power of `molecule`.
 
 With a few hacks you can actually create a fully featured integration with this paradigm, remember, coding should always be easy, and redux principles are easy.
+
+## [Back to Table of Contents](./index.md)

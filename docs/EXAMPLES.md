@@ -1,8 +1,8 @@
-## Examples
+# React Molecule - Examples
 
 Now that we are familiar with the concepts, we are going to take that simple example, with the `SearchBar` and the `UserList`. Basically what we want, is when you type into the `SearchBar`, we want the `UserList` to update properly.
 
-### Event-based Approach
+## Event-based Approach
 
 ```jsx
 // UserPage
@@ -75,7 +75,7 @@ const UserList = ({ users }) => (
 
 Note that `UserListWithData` is not an `Atom`, it interracts with the outside world without using `Agents`.
 
-### Reactive-store Approach
+## Reactive-store Approach
 
 For this example we are going to introduce a new configuration option to the `molecule` called `store`.
 
@@ -215,7 +215,7 @@ const UserListWithObserve = observer(({ molecule }) => {
 
 MobX is a very intelligent reactive store, it can help you a lot!
 
-### Agent Stores
+## Agent Stores
 
 In the example above we use the store at molecule level, but sometimes it may make sense to use it at Agent Level:
 
@@ -337,3 +337,5 @@ init() {
   this.on('search', () => { ... })
 }
 ```
+
+## [Back to Table of Contents](./index.md)
