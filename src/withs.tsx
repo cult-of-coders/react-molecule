@@ -57,7 +57,6 @@ export const withAgent = (agentName, asName: string = 'agent') => {
  * <WithAgent agent="loader">{({agent, molecule}) => ()}</WithAgent>
  */
 export function WithAgent({ children, agent }) {
-  console.log(agent);
   return React.createElement(
     withAgent(agent)(({ agent, molecule }) => {
       return children({ agent, molecule });
