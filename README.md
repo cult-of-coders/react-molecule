@@ -1,5 +1,8 @@
 # React Molecule
 
+[![Build Status](https://travis-ci.org/cult-of-coders/react-molecule.svg?branch=master)](https://travis-ci.org/cult-of-coders/react-molecule)
+[![Coverage Status](https://coveralls.io/repos/github/cult-of-coders/react-molecule/badge.svg?branch=master)](https://coveralls.io/github/cult-of-coders/react-molecule?branch=master)
+
 Molecule is a super light-weight framework that lets you reason about inter-component communication iterating on FLUX paradigms and introducing a new kind of glue between your components.
 
 Whether you're writing something simple, either you're writing a complex plugin, you will spend time thinking on the following:

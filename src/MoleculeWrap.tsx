@@ -1,10 +1,6 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import EventEmitter from 'event-emitter';
-
 import { MoleculeOptions } from './defs';
 import MoleculeContext from './MoleculeContext';
-import ComponentRegistry from './ComponentRegistry';
 import MoleculeModel from './Molecule';
 
 export interface Props extends MoleculeOptions {
