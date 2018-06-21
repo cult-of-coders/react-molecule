@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/cult-of-coders/react-molecule.svg?branch=master)](https://travis-ci.org/cult-of-coders/react-molecule)
 [![Coverage Status](https://coveralls.io/repos/github/cult-of-coders/react-molecule/badge.svg?branch=master)](https://coveralls.io/github/cult-of-coders/react-molecule?branch=master)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 Molecule is a super light-weight framework that lets you reason about inter-component communication iterating on FLUX paradigms and introducing a new kind of glue between your components.
 
@@ -30,10 +31,14 @@ const UserPage = props => (
 );
 ```
 
-## API
+[Start reading the documentation](./docs/index.md)
 
-Work in progress. We aim to create a proper documentation.
+## [API](./docs/API.md)
+
+After you read the documentation you can use the API for reference:
+
+[Click here to read it](./docs/API.md)
 
 ## Support
 
-For paid support feel free to contact-us at contact@cultofcoders.com
+Feel free to contact us at

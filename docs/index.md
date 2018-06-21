@@ -8,3 +8,5 @@ The learning curve is split into the following chapters:
 - [Write Redux from Scratch](./REDUX.md) - Learn how to write Redux from scratch with molecule
 
 Our aim is to make the documentation as simple and intuitive as possible, if you feel like you have trouble with some concepts or that they are hard to digest, it's very likely that they were not properly documented, so feel free to create a Pull-Request to improve it, or create an issue and we'll take care of it!
+
+## [Access the API](./API.md)
