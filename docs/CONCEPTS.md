@@ -40,7 +40,7 @@ const SearchBar = withMolecule(({ molecule }) => {
 });
 ```
 
-Alternatively you could pass it like this:
+Alternatively, you could pass it like this:
 
 ```jsx
 import React, { Fragment } from 'react';
@@ -75,12 +75,11 @@ const UserPage = mole()(({ molecule }) => {
 });
 ```
 
-We'll dive into how we can configure a Molecule after we understood the concepts.
+We'll dive into how we can configure a Molecule after we understand the concepts.
 
 ## Atom
 
-We regard as `Atom` a `Component` inside a `Molecule` which does not interract with the outside world, it only interracts
-with the `molecule` object. For example, it does not make an API calls, it does not modify any outside state, it leaves isolated to the molecule it belongs to.
+We regard an `Atom` as a `Component` inside a `Molecule`, which does not interact with the outside world, it only interacts with the `molecule` object. For example, it does not make API calls, it does not modify any outside state, it leaves isolated to the molecule it belongs to.
 
 Just to leave it here as an example, below is an atom:
 
@@ -96,8 +95,8 @@ You can have `Components` under your `Molecule` that do communicate with outside
 
 ## Agent
 
-Agents are the way to interract with the outside world. (Making API calls, modifying client-state, etc)
-The principle behind them is that we can have these services that are independent fully of the component and they can contain logic for modifying the components.
+Agents are the way to interact with the outside world. (Making API calls, modifying client-state, etc.)
+The principle behind them is that we can have these services that are fully independent of the component and they can contain logic for modifying components.
 
 For example, an Agent would be a service that loads data from a REST-API endpoint:
 
@@ -164,7 +163,7 @@ class UserList extends Component {
 }
 ```
 
-But why do we go to such extend to just pass a service that calls a method, can't we just pass it directly?
+But why do we go to such extent to just pass a service that calls a method, can't we just pass it directly?
 
 Yes, we could do that but the main advantage is that our `Agents` get access to the `molecule`, thus enabling communication
 with the Components inside the Molecule.
@@ -212,7 +211,7 @@ const UserPage = () => {
 };
 ```
 
-Pretty straight forward, right? There are ofcourse, many subtle and interesting aspects of the `Registry` however, they will be explored later on.
+Pretty straight forward, right? There are of course, many subtle and interesting aspects of the `Registry` however, they will be explored later on.
 
 The next steps into understanding the molecule is to see the components play! So let's start playing.
 
