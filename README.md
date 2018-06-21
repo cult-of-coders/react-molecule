@@ -32,7 +32,7 @@ const UserPage = props => (
 
 ## API
 
-Work in progress. We aim to create a propper documentation.
+Work in progress. We aim to create a proper documentation.
 
 ## Support
 
