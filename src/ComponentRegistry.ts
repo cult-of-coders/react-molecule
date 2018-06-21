@@ -2,6 +2,8 @@ import { ComponentMap, ComponentRegistryBlendOptions } from './defs';
 import React from 'react';
 
 export class ComponentRegistry {
+  // Index to allow const { X, Y } = registry
+  [index: string]: any;
   public store;
   public parent: ComponentRegistry;
 
@@ -34,10 +36,6 @@ export class ComponentRegistry {
       component = this.parent.getSingle(componentName);
     }
 
-    if (!component) {
-      throw new Error(`We could not find the given component`);
-    }
-
     return component;
   }
 
@@ -53,7 +51,7 @@ export class ComponentRegistry {
 
   blend(
     registry: ComponentRegistry | ComponentMap,
-    options: ComponentRegistryBlendOptions
+    options?: ComponentRegistryBlendOptions
   ) {
     options = options || {};
 
@@ -90,7 +88,7 @@ export class ComponentRegistry {
  * This factory method allows us to use: const { Tags, Posts } = Registry;
  * @param args
  */
-export function createRegistry(...args) {
+export function createRegistry(...args): ComponentRegistry {
   const registry = new ComponentRegistry(...args);
 
   return new Proxy(registry, {

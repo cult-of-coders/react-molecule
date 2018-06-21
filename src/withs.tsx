@@ -1,15 +1,22 @@
 import MoleculeContext from './MoleculeContext';
 import * as React from 'react';
+import Molecule from './Molecule';
 
 function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
 
-export function withMolecule(WrappedComponent): React.StatelessComponent {
-  const WithMoleculeContainer: React.SFC = function(props) {
+export interface WithMoleculeProps {
+  molecule: Molecule;
+}
+
+export const withMolecule = (WrappedComponent): React.SFC<any> => {
+  const WithMoleculeContainer: React.SFC = function(props: any) {
     return (
       <MoleculeContext.Consumer>
-        {molecule => <WrappedComponent molecule={molecule} {...props} />}
+        {molecule =>
+          React.createElement(WrappedComponent, { ...props, molecule })
+        }
       </MoleculeContext.Consumer>
     );
   };
@@ -19,9 +26,9 @@ export function withMolecule(WrappedComponent): React.StatelessComponent {
   )})`;
 
   return WithMoleculeContainer;
-}
+};
 
-export function withAgent(agentName, asName: string = 'agent') {
+export const withAgent = (agentName, asName: string = 'agent') => {
   return function(WrappedComponent) {
     const WithAgentContainer: React.SFC = function(props) {
       return React.createElement(
@@ -30,7 +37,10 @@ export function withAgent(agentName, asName: string = 'agent') {
             [asName]: molecule.agents[agentName],
           });
 
-          return <WrappedComponent {...newProps} molecule={molecule} />;
+          return React.createElement(WrappedComponent, {
+            ...newProps,
+            molecule,
+          });
         })
       );
     };
@@ -41,7 +51,7 @@ export function withAgent(agentName, asName: string = 'agent') {
 
     return WithAgentContainer;
   };
-}
+};
 
 /**
  * <WithAgent agent="loader">{({agent, molecule}) => ()}</WithAgent>

@@ -7,10 +7,10 @@ import MainRegistry, {
   ComponentRegistry,
 } from './ComponentRegistry';
 
-export default class MoleculeModel {
+export default class Molecule {
   name?: string;
-  config = {};
-  debug = false;
+  config: any = {};
+  debug: boolean = false;
   agents: { [key: string]: Agent } = {};
   emitter: EventEmitter;
   store: any = {};

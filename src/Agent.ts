@@ -2,13 +2,18 @@ import { IAgent } from './defs';
 import EventEmitter from './EventEmitter';
 import Molecule from './Molecule';
 
+export type AgentConfig = {
+  molecule: Molecule;
+  [key: string]: any;
+};
+
 class Agent implements IAgent {
   config: any = {};
   store?: any;
   emitter: EventEmitter;
   preventInit: boolean = false;
 
-  constructor(config) {
+  constructor(config?: AgentConfig) {
     this.config = config;
     this.validate(config);
 
@@ -51,7 +56,7 @@ class Agent implements IAgent {
     return this.config.debug || this.molecule.debug;
   }
 
-  static factory(config): (molecule: Molecule) => IAgent {
+  static factory(config?: object): ((molecule: Molecule) => any) {
     const def = this;
     return function(molecule) {
       return new def({ ...config, molecule });

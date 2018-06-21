@@ -1,8 +1,9 @@
 import EventEmitter from './EventEmitter';
-import { Molecule, Agent } from '.';
+import Molecule from './Molecule';
+import Agent from './Agent';
 
 export type AgentDefinitionMap = {
-  [key: string]: (molecule) => Agent;
+  [key: string]: (molecule: Molecule) => Agent;
 };
 
 export type ComponentMap = {
