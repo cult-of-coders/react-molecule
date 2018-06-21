@@ -1,5 +1,6 @@
 import './enzyme.config';
 import { withMolecule, WithMolecule, withAgent, WithAgent } from '../withs';
+import mole from '../mole';
 import { ComponentRegistry, createRegistry } from './../ComponentRegistry';
 import Molecule from '../MoleculeWrap';
 import MoleculeModel from '../Molecule';
@@ -10,6 +11,29 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 describe('withs', () => {
+  it('mole', () => {
+    function HelloDumb({ molecule }) {
+      return (
+        <div>
+          {molecule instanceof MoleculeModel
+            ? `Yes:${molecule.config.text}`
+            : 'No'}
+        </div>
+      );
+    }
+
+    const Dummy = mole(() => {
+      return {
+        config: {
+          text: 'Woop',
+        },
+      };
+    })(HelloDumb);
+
+    const wrapper = shallow(<Dummy />);
+    assert.include(wrapper.html(), 'Yes:Woop');
+  });
+
   it('withMolecule', () => {
     function HelloDumb({ molecule }) {
       return <div>{molecule instanceof MoleculeModel ? 'Yes' : 'No'}</div>;

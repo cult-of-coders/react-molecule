@@ -79,7 +79,12 @@ We'll dive into how we can configure a Molecule after we understand the concepts
 
 ## Atom
 
+<<<<<<< HEAD
 We regard an `Atom` as a `Component` inside a `Molecule`, which does not interact with the outside world, it only interacts with the `molecule` object. For example, it does not make API calls, it does not modify any outside state, it leaves isolated to the molecule it belongs to.
+=======
+We regard as `Atom` a `Component` inside a `Molecule` which does not interract with the outside world, it only interracts
+with the `molecule` object. For example, it does not make an API calls, it does not modify any outside state, it lives isolated to the molecule it belongs to.
+>>>>>>> Updated API docs
 
 Just to leave it here as an example, below is an atom:
 

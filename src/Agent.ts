@@ -15,7 +15,11 @@ class Agent implements IAgent {
 
   constructor(config?: AgentConfig) {
     this.config = config;
-    this.validate(config);
+
+    let configWithoutMolecule = Object.assign({}, config);
+    delete configWithoutMolecule.molecule;
+
+    this.validate(configWithoutMolecule);
 
     this.emitter = new EventEmitter({
       context: config.name,
