@@ -23,6 +23,8 @@ Whether you're writing something simple or a complex plugin, you will spend time
 Learn how to use React Molecule in an easy and intuitive manner. The documentation provides the learning curve for you to get up to speed and start hacking!
 
 ```jsx
+import { Molecule } from 'react-molecule';
+
 const UserPage = props => (
   <Molecule>
     <SearchBar />
@@ -31,7 +33,7 @@ const UserPage = props => (
 );
 ```
 
-[Start reading the documentation](./docs/index.md)
+[Start reading the documentation](./docs/index.md) then use the [API](./docs/API.md) for reference.
 
 ## [API](./docs/API.md)
 
