@@ -12,10 +12,10 @@ import { shallow } from 'enzyme';
 
 describe('withs', () => {
   it('mole', () => {
-    function HelloDumb({ molecule }) {
+    function HelloDumb({ molecule, value }) {
       return (
         <div>
-          {molecule instanceof MoleculeModel
+          {molecule instanceof MoleculeModel && value == 123
             ? `Yes:${molecule.config.text}`
             : 'No'}
         </div>
@@ -30,13 +30,17 @@ describe('withs', () => {
       };
     })(HelloDumb);
 
-    const wrapper = shallow(<Dummy />);
+    const wrapper = shallow(<Dummy value={123} />);
     assert.include(wrapper.html(), 'Yes:Woop');
   });
 
   it('withMolecule', () => {
-    function HelloDumb({ molecule }) {
-      return <div>{molecule instanceof MoleculeModel ? 'Yes' : 'No'}</div>;
+    function HelloDumb({ molecule, value }) {
+      return (
+        <div>
+          {value == 123 && molecule instanceof MoleculeModel ? 'Yes' : 'No'}
+        </div>
+      );
     }
 
     const Hello = withMolecule(HelloDumb);
