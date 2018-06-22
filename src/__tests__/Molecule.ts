@@ -149,4 +149,33 @@ describe('MoleculeModel', () => {
 
     root.deepmit('deep');
   });
+
+  it('Should work with deep and bottom-up event propagation', done => {
+    const root = new Molecule({
+      name: 'i_am_root',
+    });
+
+    const parent = new Molecule(
+      {
+        name: 'i_am_parent',
+      },
+      root
+    );
+
+    const child = new Molecule(
+      {
+        name: 'i_am_child',
+      },
+      parent
+    );
+
+    let inRoot = false;
+    root.on('deep', () => (inRoot = true));
+    child.on('deep', () => {
+      assert.isTrue(inRoot);
+      done();
+    });
+
+    root.deepmit('deep');
+  });
 });
