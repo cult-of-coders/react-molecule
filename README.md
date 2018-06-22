@@ -43,4 +43,4 @@ After you read the documentation you can use the API for reference:
 
 ## Support
 
-Feel free to contact us at
+Feel free to contact us at contact@cultofcoders.com
