@@ -176,10 +176,12 @@ import { Agent } from 'react-molecule';
 
 class UserLoader extends Agent {
   init() {
-    this.molecule.on('search', () => {
+    const { molecule } = this;
+
+    molecule.on('search', () => {
       fetch('https://jsonplaceholder.typicode.com/users')
         .then(response => response.json())
-        .then(users => this.molecule.emit('data_loaded', users);
+        .then(users => molecule.emit('data_loaded', users);
     })
   }
 }

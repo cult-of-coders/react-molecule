@@ -3,6 +3,7 @@ import * as BaseEventEmitter from 'eventemitter3';
 export type Options = {
   context?: string;
   debug?: boolean | string;
+  parent?: EventEmitter;
 };
 
 export type ObjectEvent = {
@@ -22,7 +23,7 @@ export default class EventEmitter extends BaseEventEmitter {
   }
 
   emit(event: Event, ...args: any[]): boolean {
-    if (typeof event === 'object' && !!event.name) {
+    if (event && typeof event === 'object' && !!event.name) {
       if (event.validate) {
         event.validate.call(null, ...args);
       }
@@ -32,7 +33,13 @@ export default class EventEmitter extends BaseEventEmitter {
 
     this.logEmit(event, ...args);
 
-    return super.emit(<string | symbol>event, ...args);
+    const result = super.emit(<string | symbol>event, ...args);
+
+    if (this.options.parent) {
+      this.options.parent.emit(event, ...args);
+    }
+
+    return result;
   }
 
   on(event: Event, handler: (...args: any[]) => void): this {

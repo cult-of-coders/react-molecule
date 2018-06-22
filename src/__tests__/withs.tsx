@@ -110,4 +110,55 @@ describe('withs', () => {
     const wrapper = shallow(<Dummy />);
     assert.include(wrapper.html(), 'Yes');
   });
+
+  it('Molecule should be able to have access to the parent molecule', () => {
+    const Hello: React.SFC<any> = ({ molecule }) => {
+      const isOk =
+        molecule.name === 'child' &&
+        molecule.parent &&
+        molecule.parent.name === 'parent';
+
+      return <div>{isOk ? 'Yes' : 'No'}</div>;
+    };
+
+    const Wrapper = () => (
+      <Molecule name="parent">
+        <Molecule name="child">
+          <Hello />
+        </Molecule>
+      </Molecule>
+    );
+
+    const wrapper = shallow(<Wrapper />);
+    assert.include(wrapper.html(), 'Yes');
+  });
+
+  it('Molecule & parents -- should dispatch event to parent molecule', done => {
+    const Hello: React.SFC<any> = ({ molecule }) => {
+      molecule.emit('propagate');
+      return null;
+    };
+
+    function agent(molecule) {
+      return {
+        prepare() {},
+        validate() {},
+        clean() {},
+        init() {
+          molecule.on('propagate', () => done());
+        },
+      };
+    }
+
+    const Wrapper = () => (
+      <Molecule name="parent" agents={{ agent }}>
+        <Molecule name="child">
+          <Hello />
+        </Molecule>
+      </Molecule>
+    );
+
+    const wrapper = shallow(<Wrapper />);
+    wrapper.html();
+  });
 });

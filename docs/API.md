@@ -34,13 +34,14 @@ You can access all the information provided in `config` in the `molecule` model.
 
 You can also access `molecule.emitter` if you need it. It returns an instance of the `EmitterModel` which is basically `eventemitter3` that allows a special type of Event.
 
-| Member                 | Returns             | Description                                                                                                                              |
-| ---------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| getAgent(name)         | Agent               | Returns the defined agents. Throws an `Error` if no agent is found with that name.                                                       |
-| registry               | `ComponentRegistry` | This an instantiation of the registry that you provided. If you provided a map, it's a registry that has as parent the global `Registry` |
-| emit(event, ...values) | void                | Emits events to the laser-focused molecule. For example `molecule.emit('search', 'John')` this will notify all listeners                 |
-| on(event, handler)     | void                | Listens to events emitted to the molecule. `molecule.on('search', (value) => {...})`                                                     |
-| once(event, handler)   | void                | Same as `on()` but after the first event is caught it will stop listening to it                                                          |
+| Member                 | Returns             | Description                                                                                                                                                                   |
+| ---------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| getAgent(name)         | Agent               | Returns the defined agents. Throws an `Error` if no agent is found with that name.                                                                                            |
+| registry               | `ComponentRegistry` | This an instantiation of the registry that you provided. If you provided a map, it's a registry that has as parent the global `Registry`                                      |
+| emit(event, ...values) | void                | Emits events to the laser-focused molecule. For example `molecule.emit('search', 'John')` this will notify all listeners                                                      |
+| on(event, handler)     | void                | Listens to events emitted to the molecule. `molecule.on('search', (value) => {...})`                                                                                          |
+| once(event, handler)   | void                | Same as `on()` but after the first event is caught it will stop listening to it                                                                                               |
+| parent                 | `Molecule`          | Events are propagated to the parent molecule automatically, so if you have a `<Molecule />` within a `<Molecule />`, events emitted on the molecule are sent up to the parent |
 
 ## Agent
 

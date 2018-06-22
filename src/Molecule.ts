@@ -15,13 +15,19 @@ export default class Molecule {
   emitter: EventEmitter;
   store: any = {};
   registry: ComponentRegistry;
+  parent?: Molecule;
 
-  constructor(value: MoleculeOptions) {
+  constructor(value: MoleculeOptions, parent?: Molecule) {
     const { config, agents, store, registry, name, debug } = value;
+
+    if (parent) {
+      this.parent = parent;
+    }
 
     this.emitter = new EventEmitter({
       context: name,
       debug,
+      parent: parent ? parent.emitter : null,
     });
 
     this.registry = createRegistry({}, MainRegistry);

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { MoleculeOptions } from './defs';
 import MoleculeContext from './MoleculeContext';
 import MoleculeModel from './Molecule';
+import { withMolecule } from './withs';
 
 export interface Props extends MoleculeOptions {
   children?: any;
@@ -13,7 +14,12 @@ class Molecule extends React.Component<Props> {
   constructor(props) {
     super(props);
 
-    this.molecule = new MoleculeModel(props);
+    let parent = null;
+    if (props.molecule instanceof MoleculeModel) {
+      parent = props.molecule;
+    }
+
+    this.molecule = new MoleculeModel(props, parent);
     this.molecule.init();
   }
 
@@ -43,4 +49,4 @@ class Molecule extends React.Component<Props> {
   }
 }
 
-export default Molecule;
+export default withMolecule(Molecule);
