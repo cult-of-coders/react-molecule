@@ -8,7 +8,7 @@ import MainRegistry, {
 } from './ComponentRegistry';
 
 export default class Molecule {
-  name?: string;
+  name: string = 'anonymous';
   config: any = {};
   debug: boolean = false;
   agents: { [key: string]: Agent } = {};
@@ -16,12 +16,14 @@ export default class Molecule {
   store: any = {};
   registry: ComponentRegistry;
   parent?: Molecule;
+  children: Molecule[] = [];
 
   constructor(value: MoleculeOptions, parent?: Molecule) {
     const { config, agents, store, registry, name, debug } = value;
 
     if (parent) {
       this.parent = parent;
+      parent.children.push(this);
     }
 
     this.emitter = new EventEmitter({
@@ -52,6 +54,14 @@ export default class Molecule {
     }
   }
 
+  get root() {
+    if (!this.parent) {
+      return this;
+    }
+
+    return this.parent.root;
+  }
+
   init() {
     // This gives all agent the chance to hook into other agents before they do anything
     for (let agentName in this.agents) {
@@ -68,6 +78,12 @@ export default class Molecule {
   }
 
   clean() {
+    if (this.parent) {
+      this.parent.children = this.parent.children.filter(
+        molecule => molecule !== this
+      );
+    }
+
     this.emitter.removeAllListeners();
     for (let agentName in this.agents) {
       const agent = this.agents[agentName];
@@ -87,6 +103,28 @@ export default class Molecule {
 
   public emit(event: any, ...args: any[]) {
     this.emitter.emit(event, ...args);
+  }
+
+  public deepmit(event: any, ...args: any[]) {
+    this.emit(event, ...args);
+    this.children.forEach(child => {
+      child.deepmit(event, ...args);
+    });
+  }
+
+  /**
+   * @param name
+   */
+  closest(name: string) {
+    if (this.name === name) {
+      return this;
+    }
+
+    if (this.parent) {
+      return this.parent.closest(name);
+    }
+
+    return null;
   }
 
   getAgent(name): Agent {

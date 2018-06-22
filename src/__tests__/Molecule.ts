@@ -87,4 +87,66 @@ describe('MoleculeModel', () => {
       done();
     }
   });
+
+  it('Should work as a tree with children, root and closest', () => {
+    const root = new Molecule({
+      name: 'i_am_root',
+    });
+
+    const parent = new Molecule(
+      {
+        name: 'i_am_parent',
+      },
+      root
+    );
+
+    const child = new Molecule(
+      {
+        name: 'i_am_child',
+      },
+      parent
+    );
+
+    assert.isTrue(child.root === root);
+    assert.isTrue(root.root === root);
+    assert.isTrue(root.children.length === 1);
+    assert.isTrue(parent.children.length === 1);
+    assert.isTrue(child.children.length === 0);
+    assert.isTrue(child.closest('i_am_parent') === parent);
+    assert.isTrue(parent.closest('i_am_parent') === parent);
+    assert.isTrue(root.closest('i_am_parent') === null);
+
+    const orphan = new Molecule({
+      name: 'i_am_orphan',
+    });
+
+    assert.isFalse(!!orphan.parent);
+
+    child.clean();
+    assert.isTrue(parent.children.length === 0);
+  });
+
+  it('Should work with deep event propagation', done => {
+    const root = new Molecule({
+      name: 'i_am_root',
+    });
+
+    const parent = new Molecule(
+      {
+        name: 'i_am_parent',
+      },
+      root
+    );
+
+    const child = new Molecule(
+      {
+        name: 'i_am_child',
+      },
+      parent
+    );
+
+    child.on('deep', () => done());
+
+    root.deepmit('deep');
+  });
 });
