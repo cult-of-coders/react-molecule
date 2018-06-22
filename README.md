@@ -6,14 +6,14 @@
 
 Molecule is a light-weight framework that lets you reason about inter-component communication, dependency injection and logic decoupling.
 
-It allows you to reason about the following concepts:
+### It allows you to reason about the following concepts:
 
 - Inter-component communication
 - Component customisability at deep levels
 - Isolation
 - Extendable & hackable functionality
 
-The principles it adheres to:
+#### The principles it adheres to:
 
 - Start simple and easy, expand & organise as you grow
 - Use React components just for rendering and reading from a store and dispatching events
