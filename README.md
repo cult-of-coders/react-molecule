@@ -17,7 +17,7 @@ The principles it adheres to:
 
 - Start simple and easy, expand & organise as you grow
 - Use React components just for rendering and reading from a store and dispatching events
-- Separation of logic through agents that can be extensible by other agents
+- Separation of logic through agents which can be extended by other agents
 - Enforces the [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) pattern for React Components allowing super easy to test components
 
 Works very well with [mobx](https://mobx.js.org/) and [mobx-react](https://github.com/mobxjs/mobx-react) ([as shown in the examples](./docs/EXAMPLES.md)), but you can also apply the [Redux principles](./docs/REDUX.md) with it, or just [pure FLUX](https://facebook.github.io/flux/docs/overview.html). It's a matter of choice, and in some cases you could also combine more concepts in the same app.
