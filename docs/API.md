@@ -94,7 +94,7 @@ const { Hello } = Registry;
 // And render it <Hello />
 ```
 
-Creating registries:
+#### Creating Registries
 
 ```js
 import { createRegistry } from 'react-molecule';
@@ -107,6 +107,8 @@ const CustomRegistry = createRegistry({Item}, parent?);
 
 If `Item` isn't found, it will try to look for it in the parent, and if the parent has a parent, it will look using a `bottom-up` approach.
 
+#### Blending Registries
+
 ```js
 CustomRegistry.blend(
   { HelloAgain: MyReactComponent }
@@ -116,6 +118,23 @@ CustomRegistry.blend(
   }
 );
 ```
+
+#### Enveloping Registry Items
+
+When you are working with a package built with `react-molecule` and you want to override a certain component. There may be many situations where you just want to wrap that component, or pass different props to it.
+
+This is why we have a special type of blend, and it's enough to specify a function with 2 arguments:
+
+```jsx
+CustomRegistry.blend({
+  // Note the second argument which represents the old component.
+  Item: (props, Item) => {
+    return <Item {...props} showSomething={true} />;
+  },
+});
+```
+
+What this does, is that when you are using `Item` from the registry inside your molecule, or outside, if there has been that component already defined you can envelop it. You have to check if that `Component` exists. The reason we don't throw an exception is that you may want to customize it deeper.
 
 ## Emitter
 

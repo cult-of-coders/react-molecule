@@ -1,7 +1,10 @@
 import './enzyme.config';
 import { withMolecule, WithMolecule, withAgent, WithAgent } from '../withs';
 import mole from '../mole';
-import { ComponentRegistry, createRegistry } from './../ComponentRegistry';
+import Registry, {
+  ComponentRegistry,
+  createRegistry,
+} from './../ComponentRegistry';
 import Molecule from '../MoleculeWrap';
 import MoleculeModel from '../Molecule';
 import Agent from '../Agent';
@@ -164,5 +167,33 @@ describe('withs', () => {
 
     const wrapper = shallow(<Wrapper />);
     wrapper.html();
+  });
+
+  it('Should work with enveloping the component', () => {
+    const Item = ({ value }) => (value ? 'Yes' : 'No');
+    Registry.blend({
+      Item,
+    });
+
+    const EvenelopeItem = (props, Item) => {
+      return <Item value={true} />;
+    };
+
+    Registry.blend({
+      Item: EvenelopeItem,
+    });
+
+    const Wrapper = () => (
+      <Molecule>
+        {molecule => {
+          const { Item } = molecule.registry;
+
+          return <Item value={false} />;
+        }}
+      </Molecule>
+    );
+
+    const wrapper = shallow(<Wrapper />);
+    assert.include(wrapper.html(), 'Yes');
   });
 });

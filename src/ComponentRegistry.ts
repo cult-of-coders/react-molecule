@@ -4,12 +4,13 @@ import React from 'react';
 export class ComponentRegistry {
   // Index to allow const { X, Y } = registry
   [index: string]: any;
-  public store;
+  public store = {};
   public parent: ComponentRegistry;
 
   constructor(store = {}, parent = null) {
-    this.store = store;
     this.parent = parent;
+
+    this.updateStore(store);
   }
 
   get(componentName): any | ComponentMap {
@@ -80,7 +81,27 @@ export class ComponentRegistry {
       }
     }
 
-    Object.assign(this.store, store);
+    this.updateStore(store);
+  }
+
+  private updateStore(store = {}) {
+    let newStore = {};
+    for (let COMPONENT in store) {
+      if (
+        typeof store[COMPONENT] === 'function' &&
+        store[COMPONENT].length === 2
+      ) {
+        let oldReference = this.getSingle(COMPONENT);
+
+        newStore[COMPONENT] = function(props) {
+          return store[COMPONENT].call(null, props, oldReference);
+        };
+      } else {
+        newStore[COMPONENT] = store[COMPONENT];
+      }
+    }
+
+    Object.assign(this.store, newStore);
   }
 }
 
