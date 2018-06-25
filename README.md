@@ -41,8 +41,8 @@ const UserPage = props => (
 );
 
 const SearchBar = ({ molecule }) => (
-  <input onKeyUp={(e) => molecule.emit('search', e.target.value)}
-)
+  <input onKeyUp={e => molecule.emit('search', e.target.value)} />
+);
 
 // Now you could listen to any events inside the molecule from any components inside it
 ```
