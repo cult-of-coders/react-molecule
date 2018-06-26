@@ -21,6 +21,8 @@ export default class Molecule {
   constructor(value: MoleculeOptions, parent?: Molecule) {
     const { config, agents, store, registry, name, debug } = value;
 
+    this.debug = !!debug;
+
     if (parent) {
       this.parent = parent;
       parent.children.push(this);
