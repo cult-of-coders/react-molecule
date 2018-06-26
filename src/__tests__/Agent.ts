@@ -1,4 +1,3 @@
-import { AgentConfig } from './../../../../../.meteor/local/build/programs/server/npm/node_modules/react-molecule/src/Agent';
 import Molecule from '../Molecule';
 import Agent from '../Agent';
 import { describe, it } from 'mocha';
