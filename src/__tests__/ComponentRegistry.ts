@@ -22,7 +22,7 @@ describe('ComponentRegistry', () => {
     assert.equal(dummy, Dummy1);
   });
 
-  it('Should work be able to blend properly', () => {
+  it('Should work be able to blend properly with object map', () => {
     const dummy = () => null;
 
     const registry = createRegistry({
@@ -32,6 +32,66 @@ describe('ComponentRegistry', () => {
     registry.blend({
       Dummy2: dummy,
     });
+
+    const { Dummy2 } = registry;
+
+    assert.equal(dummy, Dummy2);
+  });
+
+  it('Should work be able to blend properly with object map', () => {
+    const dummy = () => null;
+
+    const registry = createRegistry({
+      Dummy1: dummy,
+    });
+
+    registry.blend(
+      {
+        Dummy2: dummy,
+      },
+      {
+        prefix: 'John',
+      }
+    );
+
+    const { JohnDummy2 } = registry;
+    ``;
+    assert.equal(dummy, JohnDummy2);
+  });
+
+  it('Should work be able to blend with throwOnCollisions option', done => {
+    const dummy = () => null;
+
+    const registry = createRegistry({
+      Dummy1: dummy,
+    });
+
+    try {
+      registry.blend(
+        {
+          Dummy1: dummy,
+        },
+        {
+          throwOnCollisions: true,
+        }
+      );
+    } catch (e) {
+      done();
+    }
+  });
+
+  it('Should work be able to blend properly with another registry', () => {
+    const dummy = () => null;
+
+    const registry = createRegistry({
+      Dummy1: dummy,
+    });
+
+    const blendable = createRegistry({
+      Dummy2: dummy,
+    });
+
+    registry.blend(blendable);
 
     const { Dummy2 } = registry;
 

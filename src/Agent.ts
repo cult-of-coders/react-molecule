@@ -14,7 +14,7 @@ class Agent implements IAgent {
   preventInit: boolean = false;
 
   constructor(config?: AgentConfig) {
-    this.config = config;
+    Object.assign(this.config, config);
 
     let configWithoutMolecule = Object.assign({}, config);
     delete configWithoutMolecule.molecule;
@@ -23,7 +23,7 @@ class Agent implements IAgent {
 
     this.emitter = new EventEmitter({
       context: config.name,
-      debug: config.debug,
+      debug: this.isDebug(),
     });
   }
 

@@ -40,16 +40,6 @@ export class ComponentRegistry {
     return component;
   }
 
-  createElement(name, ...args) {
-    const Component = this.get(name);
-
-    if (!Component) {
-      throw new Error(`Sorry, but there is no component: "${name}" registered`);
-    }
-
-    return React.createElement(Component, ...args);
-  }
-
   blend(
     registry: ComponentRegistry | ComponentMap,
     options?: ComponentRegistryBlendOptions

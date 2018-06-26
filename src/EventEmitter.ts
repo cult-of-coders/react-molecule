@@ -47,14 +47,17 @@ export default class EventEmitter extends BaseEventEmitter {
       event = event.name;
     }
 
-    const newHandler = (...args) => {
-      this.logHandle(event, ...args);
-      return handler(...args);
-    };
-
     this.logOn(event);
 
-    return super.on(<string | symbol>event, newHandler);
+    return super.on(<string | symbol>event, handler);
+  }
+
+  off(event: Event, handler: (...args: any[]) => void): this {
+    if (typeof event === 'object' && !!event.name) {
+      event = event.name;
+    }
+
+    return super.off(<string | symbol>event, handler);
   }
 
   once(event: Event, handler: (...args: any[]) => void): this {
@@ -62,14 +65,9 @@ export default class EventEmitter extends BaseEventEmitter {
       event = event.name;
     }
 
-    const newHandler = (...args) => {
-      this.logHandle(event, ...args);
-      return handler(...args);
-    };
-
     this.logOn(event);
 
-    return super.once(<string | symbol>event, newHandler);
+    return super.once(<string | symbol>event, handler);
   }
 
   private logEmit(event: any, ...args) {
@@ -78,15 +76,6 @@ export default class EventEmitter extends BaseEventEmitter {
     if (debug) {
       context = context || 'anonymous';
       console.log(`[${context}] Emitted ${event} with arguments: `, ...args);
-    }
-  }
-
-  private logHandle(event: any, ...args) {
-    let { context, debug } = this.options;
-
-    if (debug) {
-      context = context || 'anonymous';
-      console.log(`[${context}] Caught "${event}" with arguments: `, ...args);
     }
   }
 

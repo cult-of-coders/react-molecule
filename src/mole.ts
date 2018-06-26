@@ -8,9 +8,7 @@ function mole(
   return function(Component) {
     return function(props) {
       let options;
-      if (typeof optionsResolver === 'object') {
-        options = optionsResolver;
-      } else if (typeof optionsResolver === 'function') {
+      if (typeof optionsResolver === 'function') {
         options = optionsResolver(props);
       } else {
         options = {};

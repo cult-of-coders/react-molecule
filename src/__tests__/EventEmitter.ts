@@ -44,4 +44,31 @@ describe('EventEmitter', () => {
       done();
     }
   });
+
+  it('Shuld work with once()', done => {
+    const emitter = new EventEmitter({
+      context: 'test',
+      debug: true,
+    });
+
+    const Events = {
+      DEMO: {
+        name: 'demo',
+      },
+    };
+
+    let inAlready = false;
+    emitter.once(Events.DEMO, () => {
+      if (!inAlready) {
+        inAlready = true;
+        done();
+      } else {
+        done('Should not be here any more!');
+      }
+    });
+
+    emitter.emit(Events.DEMO);
+    emitter.emit(Events.DEMO);
+    emitter.emit(Events.DEMO);
+  });
 });
