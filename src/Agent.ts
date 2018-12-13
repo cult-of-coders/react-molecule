@@ -35,6 +35,10 @@ class Agent implements IAgent {
     this.emitter.on(event, handler);
   }
 
+  public once(event: any, handler: any) {
+    this.emitter.once(event, handler);
+  }
+
   public off(event: any, handler: any) {
     this.emitter.off(event, handler);
   }

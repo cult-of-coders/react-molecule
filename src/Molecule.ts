@@ -11,7 +11,7 @@ export default class Molecule {
   name: string = 'anonymous';
   config: any = {};
   debug: boolean = false;
-  agents: { [key: string]: Agent } = {};
+  agents: { [key: string]: any } = {};
   emitter: EventEmitter;
   store: any = {};
   registry: ComponentRegistry;
@@ -97,6 +97,10 @@ export default class Molecule {
 
   public on(event: any, handler: any) {
     this.emitter.on(event, handler);
+  }
+
+  public once(event: any, handler: any) {
+    this.emitter.once(event, handler);
   }
 
   public off(event: any, handler: any) {
