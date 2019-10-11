@@ -3,9 +3,6 @@
 In order to teach one molecule, one must be accustomed with the basic principles and wording. Then we dive into some small real-world examples and then we iterate on it.
 
 - [Basic Concepts](./CONCEPTS.md) - Understand the basic taxonomy and logic
-- [Learn By Example](./EXAMPLES.md) - Learn by seeing real-world examples
-- [Advanced Examples](./ADVANCED.md) - Crossing the territory from noob to pro
-- [Redux Implementation](./REDUX.md) - Redux's way of doing things with Molecule
 - [Molecule Tree](./MOLECULE_TREE.md) - Yes. It can be done.
 - [API](./API.md) - Now you know Molecule. Use the API as your reference.
 
