@@ -25,7 +25,7 @@
   "devDependencies": {
     "@types/enzyme": "^3.1.10",
     "@types/enzyme-adapter-react-16": "^1.0.2",
-    "@types/react": "16.3.9",
+    "@types/react": "^16.8.25",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "enzyme": "^3.3.0",
@@ -34,8 +34,8 @@
     "mobx": "4.1.1",
     "mobx-react": "^5.0.0",
     "mocha": "^3.5.3",
-    "react": "16.3.1",
-    "react-dom": "^16.4.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "remap-istanbul": "^0.11.1",
     "tslint": "^5.2.0",
     "typescript": "^2.3.2"

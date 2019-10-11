@@ -1,8 +1,9 @@
 import MoleculeContext from "./MoleculeContext";
 import { useContext } from "react";
+import MoleculeModel from "./Molecule";
 
-export function useMolecule() {
-  return useMolecule();
+export function useMolecule(): MoleculeModel {
+  return useContext(MoleculeContext);
 }
 
 export function useStore() {

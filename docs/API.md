@@ -5,16 +5,9 @@
 Molecule is the container of communication for all its components.
 
 ```js
-import { mole, Molecule } from 'react-molecule';
+import { molecule } from 'react-molecule';
 
-const Page = () => (
-  <Molecule {...options}>
-    <Component />
-  </Molecule>;
-)
-
-// or
-const Page = mole(() => options)(Component);
+const Page = molecule(() => MoleculeOptions?)(Component);
 ```
 
 ### Molecule Options
@@ -28,7 +21,7 @@ const Page = mole(() => options)(Component);
 | store    | `any`                            | The store can be anything you wish, either a simple map, either an `observable` from [MobX](https://mobx.js.org/)                                                                                                                                                                   |
 | config   | `any`                            | You can simply set a configuration at molecule level that would allow the children to read from it and adapt their behavior based on it. This is different from the store because configuration should never be changed. Imagine store as being `state` and config as being `props` |
 
-### molecule
+### molecule object
 
 You can access all the information provided in `config` in the `molecule` model. Exception being `agents`, which are stored as the actual instantiations not the factory functions.
 
@@ -53,14 +46,16 @@ You can also access `molecule.emitter` if you need it. It returns an instance of
 Agent is the way components inside a molecule communicate with outside world.
 
 ```js
-import { Agent } from 'react-molecule';
+import { Agent, molecule } from "react-molecule";
 
 class MyAgent extends Agent {}
 
-mole(() => {
-  agents: {
-    'my': MyAgent.factory()
-  }
+molecule(() => {
+  return {
+    agents: {
+      my: MyAgent.factory()
+    }
+  };
 })(Component);
 ```
 
@@ -172,17 +167,40 @@ const MyEmitter = new EmitterModel({
 
 Note: We don't recommend using the global emitter at all, unless your application contains other rendering engines than React (yes, this can happen, especially for people migrating from a statically rendered PHP app).
 
-## React Helpers
-
-#### mole
-
-Creating a molecule functional style:
+## React Hooks
 
 ```jsx
-import { mole } from "react-molecule";
+import {
+  useMolecule,
+  useAgent,
+  useAgentConfig,
+  useAgentStore,
+  useStore,
+  useRegistry,
+  useEmitter,
+  useConfig
+} from "react-molecule";
 
-const Wrapped = mole(() => MoleculeOptions)(Page);
+function Component() {
+  const molecule = useMolecule();
+  const moleculeConfig = useConfig();
+  const moleculeStore = useStore();
+  const moleculeRegistry = useRegistry();
+  const moleculeEmitter = useEmitter();
+
+  const loaderAgent = useAgent("loader"); // agent name
+  const loaderAgentConfig = useAgentConfig("loader");
+  const loaderAgentStore = useAgentConfig("loader");
+}
 ```
+
+#### useAgent
+
+```jsx
+const agent = useAgent("loader");
+```
+
+## React HOCs
 
 #### withMolecule
 

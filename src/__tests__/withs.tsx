@@ -1,47 +1,50 @@
-import './enzyme.config';
-import { withMolecule, WithMolecule, withAgent, WithAgent } from '../withs';
-import mole from '../mole';
+import "./enzyme.config";
+import { withMolecule, WithMolecule, withAgent, WithAgent } from "../withs";
+import molecule from "../mole";
 import Registry, {
   ComponentRegistry,
-  createRegistry,
-} from './../ComponentRegistry';
-import Molecule from '../MoleculeWrap';
-import MoleculeModel from '../Molecule';
-import Agent from '../Agent';
-import { describe, it } from 'mocha';
-import { assert } from 'chai';
-import * as React from 'react';
-import { shallow } from 'enzyme';
+  createRegistry
+} from "./../ComponentRegistry";
+import Molecule from "../MoleculeWrap";
+import MoleculeModel from "../Molecule";
+import Agent from "../Agent";
+import { describe, it } from "mocha";
+import { assert } from "chai";
+import * as React from "react";
+import { shallow } from "enzyme";
+import { useMolecule } from "..";
 
-describe('withs', () => {
-  it('mole', () => {
-    function HelloDumb({ molecule, value }) {
+describe("withs", () => {
+  it("molecule", () => {
+    function HelloDumb({ value }) {
+      const molecule = useMolecule();
+
       return (
         <div>
           {molecule instanceof MoleculeModel && value == 123
             ? `Yes:${molecule.config.text}`
-            : 'No'}
+            : "No"}
         </div>
       );
     }
 
-    const Dummy = mole(() => {
+    const Dummy = molecule(() => {
       return {
         config: {
-          text: 'Woop',
-        },
+          text: "Woop"
+        }
       };
     })(HelloDumb);
 
     const wrapper = shallow(<Dummy value={123} />);
-    assert.include(wrapper.html(), 'Yes:Woop');
+    assert.include(wrapper.html(), "Yes:Woop");
   });
 
-  it('withMolecule', () => {
+  it("withMolecule", () => {
     function HelloDumb({ molecule, value }) {
       return (
         <div>
-          {value == 123 && molecule instanceof MoleculeModel ? 'Yes' : 'No'}
+          {value == 123 && molecule instanceof MoleculeModel ? "Yes" : "No"}
         </div>
       );
     }
@@ -57,12 +60,12 @@ describe('withs', () => {
     );
 
     const wrapper = shallow(<Dummy />);
-    assert.include(wrapper.html(), 'Yes');
+    assert.include(wrapper.html(), "Yes");
   });
 
-  it('<WithMolecule />', () => {
+  it("<WithMolecule />", () => {
     function HelloDumb({ molecule }) {
-      return <div>{molecule instanceof MoleculeModel ? 'Yes' : 'No'}</div>;
+      return <div>{molecule instanceof MoleculeModel ? "Yes" : "No"}</div>;
     }
 
     const Dummy = () => (
@@ -76,15 +79,15 @@ describe('withs', () => {
     );
 
     const wrapper = shallow(<Dummy />);
-    assert.include(wrapper.html(), 'Yes');
+    assert.include(wrapper.html(), "Yes");
   });
 
-  it('withAgent', () => {
+  it("withAgent", () => {
     function HelloDumb({ agent }) {
-      return <div>{agent instanceof Agent ? 'Yes' : 'No'}</div>;
+      return <div>{agent instanceof Agent ? "Yes" : "No"}</div>;
     }
 
-    const Hello = withAgent('dummy')(HelloDumb);
+    const Hello = withAgent("dummy")(HelloDumb);
     class MyAgent extends Agent {}
 
     const Dummy = () => (
@@ -94,12 +97,12 @@ describe('withs', () => {
     );
 
     const wrapper = shallow(<Dummy />);
-    assert.include(wrapper.html(), 'Yes');
+    assert.include(wrapper.html(), "Yes");
   });
 
-  it('<WithAgent />', () => {
+  it("<WithAgent />", () => {
     function HelloDumb({ agent }) {
-      return <div>{agent instanceof Agent ? 'Yes' : 'No'}</div>;
+      return <div>{agent instanceof Agent ? "Yes" : "No"}</div>;
     }
 
     class MyAgent extends Agent {}
@@ -115,17 +118,19 @@ describe('withs', () => {
     );
 
     const wrapper = shallow(<Dummy />);
-    assert.include(wrapper.html(), 'Yes');
+    assert.include(wrapper.html(), "Yes");
   });
 
-  it('Molecule should be able to have access to the parent molecule', () => {
-    const Hello: React.SFC<any> = ({ molecule }) => {
-      const isOk =
-        molecule.name === 'child' &&
-        molecule.parent &&
-        molecule.parent.name === 'parent';
+  it("Molecule should be able to have access to the parent molecule", () => {
+    const Hello: React.SFC<any> = () => {
+      const molecule = useMolecule();
 
-      return <div>{isOk ? 'Yes' : 'No'}</div>;
+      const isOk =
+        molecule.name === "child" &&
+        molecule.parent &&
+        molecule.parent.name === "parent";
+
+      return <div>{isOk ? "Yes" : "No"}</div>;
     };
 
     const Wrapper = () => (
@@ -137,12 +142,14 @@ describe('withs', () => {
     );
 
     const wrapper = shallow(<Wrapper />);
-    assert.include(wrapper.html(), 'Yes');
+    assert.include(wrapper.html(), "Yes");
   });
 
-  it('Molecule & parents -- should dispatch event to parent molecule', done => {
-    const Hello: React.SFC<any> = ({ molecule }) => {
-      molecule.emit('propagate');
+  it("Molecule & parents -- should dispatch event to parent molecule", done => {
+    const Hello: React.SFC<any> = () => {
+      const molecule = useMolecule();
+
+      molecule.emit("propagate");
       return null;
     };
 
@@ -152,8 +159,8 @@ describe('withs', () => {
         validate() {},
         clean() {},
         init() {
-          molecule.on('propagate', () => done());
-        },
+          molecule.on("propagate", () => done());
+        }
       };
     }
 
@@ -169,10 +176,10 @@ describe('withs', () => {
     wrapper.html();
   });
 
-  it('Should work with enveloping the component', () => {
-    const Item = ({ value }) => (value ? 'Yes' : 'No');
+  it("Should work with enveloping the component", () => {
+    const Item = ({ value }) => (value ? "Yes" : "No");
     Registry.blend({
-      Item,
+      Item
     });
 
     const EvenelopeItem = (props, Item) => {
@@ -180,7 +187,7 @@ describe('withs', () => {
     };
 
     Registry.blend({
-      Item: EvenelopeItem,
+      Item: EvenelopeItem
     });
 
     const Wrapper = () => (
@@ -194,6 +201,6 @@ describe('withs', () => {
     );
 
     const wrapper = shallow(<Wrapper />);
-    assert.include(wrapper.html(), 'Yes');
+    assert.include(wrapper.html(), "Yes");
   });
 });
