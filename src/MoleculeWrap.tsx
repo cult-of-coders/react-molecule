@@ -1,15 +1,15 @@
-import * as React from 'react';
-import { MoleculeOptions } from './defs';
-import MoleculeContext from './MoleculeContext';
-import MoleculeModel from './Molecule';
-import { withMolecule } from './withs';
+import * as React from "react";
+import { MoleculeOptions } from "./defs";
+import MoleculeContext from "./MoleculeContext";
+import MoleculeModel from "./Molecule";
+import { withMolecule } from "./withs";
 
 function isElement(element) {
   return React.isValidElement(element);
 }
 
 function isDOMTypeElement(element) {
-  return isElement(element) && typeof element.type === 'string';
+  return isElement(element) && typeof element.type === "string";
 }
 export interface Props extends MoleculeOptions {
   children?: any;
@@ -38,20 +38,10 @@ class Molecule extends React.Component<Props> {
     const { children } = this.props;
     let results;
 
-    if (typeof children === 'function') {
+    if (typeof children === "function") {
       results = children(this.molecule);
     } else {
-      results = React.Children.map(children, child => {
-        const isPrimitive = isDOMTypeElement(child);
-
-        if (isPrimitive) {
-          return child;
-        }
-
-        return React.cloneElement(child as React.ReactElement<any>, {
-          molecule: this.molecule,
-        });
-      });
+      results = children;
     }
 
     return (
