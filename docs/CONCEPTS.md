@@ -4,10 +4,10 @@ Introducing the concepts of this framework, this is the first phase into underst
 
 ## Molecule
 
-The `Molecule` is the React Component that makes communication easier between all the children it envelops.
+We create a smart object which we call `molecule` that can be passed and accessed by the children.
 
 ```jsx
-import { molecule } from "react-molecule";
+import { molecule, useMolecule } from "react-molecule";
 
 const UserPage = molecule()(() => {
   return (
@@ -17,6 +17,11 @@ const UserPage = molecule()(() => {
     </>
   );
 };
+
+const UserList = () => {
+  const molecule = useMolecule();
+  // getting access to that object
+}
 ```
 
 By default molecule contains an `EventEmitter` stored in `molecule.emitter` in which all children can interact with each other.
@@ -59,6 +64,7 @@ const UserList = () => {
   const loader = useAgent("loadUsers");
   const [users, setUsers] = useState([]);
 
+  // this runs only once when the component is first mounted
   useEffect(() => {
     loader.loadUsers().then(users => setUsers);
   });
