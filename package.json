@@ -1,6 +1,6 @@
 {
   "name": "react-molecule",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "React Molecule is a bridge between components",
   "main": "dist/index.js",
   "repository": {
@@ -20,25 +20,25 @@
     "prepublishOnly": "npm run compile"
   },
   "peerDependencies": {
-    "react": "16.x"
+    "react": "^16.8.x"
   },
   "devDependencies": {
-    "@types/enzyme": "^3.1.10",
-    "@types/enzyme-adapter-react-16": "^1.0.2",
-    "@types/react": "16.3.9",
+    "@types/enzyme": "^3.10.3",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/react": "^16.9.5",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
-    "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
     "istanbul": "^0.4.5",
     "mobx": "4.1.1",
-    "mobx-react": "^5.0.0",
+    "mobx-react": "^5.4.4",
     "mocha": "^3.5.3",
-    "react": "16.3.1",
-    "react-dom": "^16.4.1",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
     "remap-istanbul": "^0.11.1",
-    "tslint": "^5.2.0",
-    "typescript": "^2.3.2"
+    "tslint": "^5.20.0",
+    "typescript": "^3.2.2"
   },
   "typings": "dist/index.d.ts",
   "typescript": {
@@ -46,6 +46,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "eventemitter3": "^3.1.0"
+    "eventemitter3": "^3.1.2"
   }
 }

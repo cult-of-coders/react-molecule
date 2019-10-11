@@ -5,16 +5,9 @@
 Molecule is the container of communication for all its components.
 
 ```js
-import { mole, Molecule } from 'react-molecule';
+import { molecule } from 'react-molecule';
 
-const Page = () => (
-  <Molecule {...options}>
-    <Component />
-  </Molecule>;
-)
-
-// or
-const Page = mole(() => options)(Component);
+const Page = molecule(() => MoleculeOptions?)(Component);
 ```
 
 ### Molecule Options
@@ -28,38 +21,41 @@ const Page = mole(() => options)(Component);
 | store    | `any`                            | The store can be anything you wish, either a simple map, either an `observable` from [MobX](https://mobx.js.org/)                                                                                                                                                                   |
 | config   | `any`                            | You can simply set a configuration at molecule level that would allow the children to read from it and adapt their behavior based on it. This is different from the store because configuration should never be changed. Imagine store as being `state` and config as being `props` |
 
-### molecule
+### molecule object
 
 You can access all the information provided in `config` in the `molecule` model. Exception being `agents`, which are stored as the actual instantiations not the factory functions.
 
 You can also access `molecule.emitter` if you need it. It returns an instance of the `EmitterModel` which is basically `eventemitter3` that allows a special type of Event.
 
-| Member                    | Returns             | Description                                                                                                                                                                                                    |
-| ------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| getAgent(name)            | Agent               | Returns the defined agents. Throws an `Error` if no agent is found with that name.                                                                                                                             |
-| registry                  | `ComponentRegistry` | This an instantiation of the registry that you provided. If you provided a map, it's a registry that has as parent the global `Registry`                                                                       |
-| emit(event, ...values)    | void                | Emits events to the laser-focused molecule. For example `molecule.emit('search', 'John')` this will notify all listeners                                                                                       |
-| on(event, handler)        | void                | Listens to events emitted to the molecule. `molecule.on('search', (value) => {...})`. You can also use `off()` but in theory don't worry about it, when molecule is unmounted this is handled automatically    |
-| once(event, handler)      | void                | Same as `on()` but after the first event is caught it will stop listening to it                                                                                                                                |
-| deepmit(event, ...values) | void                | Emits events to itself first, then to all the children. This can be useful in some edge-cases                                                                                                                  |
-| parent                    | `Molecule`          | This stores the parent Molecule. Events are propagated to the parent molecule automatically, so if you have a `<Molecule />` within a `<Molecule />`, events emitted on the molecule are sent up to the parent |
-| children                  | `Molecule[]`        | The children of the molecule                                                                                                                                                                                   |
-| root                      | `Molecule`          | Returns the top-most molecule in the `Molecule Tree`. Returns itself if it does not have any parent.                                                                                                           |
-| closest(name)             | `Molecule`          | Returns the first parent it finds with that name                                                                                                                                                               |
+| Member                                           | Returns             | Description                                                                                                                                                                                                    |
+| ------------------------------------------------ | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| getAgent(name)                                   | Agent               | Returns the defined agents. Throws an `Error` if no agent is found with that name.                                                                                                                             |
+| registry                                         | `ComponentRegistry` | This an instantiation of the registry that you provided. If you provided a map, it's a registry that has as parent the global `Registry`                                                                       |
+| emit(event, ...values)                           | void                | Emits events to the laser-focused molecule. For example `molecule.emit('search', 'John')` this will notify all listeners                                                                                       |
+| on(event, handler)                               | void                | Listens to events emitted to the molecule. `molecule.on('search', (value) => {...})`. You can also use `off()` but in theory don't worry about it, when molecule is unmounted this is handled automatically    |
+| once(event, handler)                             | void                | Same as `on()` but after the first event is caught it will stop listening to it                                                                                                                                |
+| deepmit(event, ...values)                        | void                | Emits events to itself first, then to all the children. This can be useful in some edge-cases                                                                                                                  |
+| parent                                           | `Molecule`          | This stores the parent Molecule. Events are propagated to the parent molecule automatically, so if you have a `<Molecule />` within a `<Molecule />`, events emitted on the molecule are sent up to the parent |
+| children                                         | `Molecule[]`        | The children of the molecule                                                                                                                                                                                   |
+| root                                             | `Molecule`          | Returns the top-most molecule in the `Molecule Tree`. Returns itself if it does not have any parent.                                                                                                           |
+| closest(name)                                    | `Molecule`          |
+| Returns the first parent it finds with that name |
 
 ## Agent
 
 Agent is the way components inside a molecule communicate with outside world.
 
 ```js
-import { Agent } from 'react-molecule';
+import { Agent, molecule } from "react-molecule";
 
 class MyAgent extends Agent {}
 
-mole(() => {
-  agents: {
-    'my': MyAgent.factory()
-  }
+molecule(() => {
+  return {
+    agents: {
+      my: MyAgent.factory()
+    }
+  };
 })(Component);
 ```
 
@@ -80,12 +76,12 @@ This is where your hackable components co-exist in a sort of JS object with litt
 
 ```js
 // `Registry` represents the global registry of components.
-import { Registry } from 'react-molecule';
+import { Registry } from "react-molecule";
 
-const Hello = () => 'Hello!'; // Any React Component
+const Hello = () => "Hello!"; // Any React Component
 
 Registry.blend({
-  Hello,
+  Hello
 });
 
 // Now you are able to access it from anywhere
@@ -130,7 +126,7 @@ CustomRegistry.blend({
   // Note the second argument which represents the old component.
   Item: (props, Item) => {
     return <Item {...props} showSomething={true} />;
-  },
+  }
 });
 ```
 
@@ -145,15 +141,15 @@ Used in `molecule` and `agents`
 Emitter extends the standard one by allowing smart events (which are basically events that can validate their parameters):
 
 ```js
-import { Emitter, EmitterModel } from 'react-molecule';
+import { Emitter, EmitterModel } from "react-molecule";
 
 const Events = {
   SAY_HELLO: {
-    name: 'say.hello',
+    name: "say.hello",
     validate(params) {
       // Throw if they are invalid
-    },
-  },
+    }
+  }
 };
 
 // Use it as you would use a string!
@@ -163,32 +159,55 @@ Emitter.emit(Events.SAY_HELLO, params);
 // Craft your own instances of emitter, if needed, Emitter acts as a global version of it
 // Each emitter from molecules or agent is an instantiation of this model
 const MyEmitter = new EmitterModel({
-  context: 'MyEmitter', // Helpful when debug is true
+  context: "MyEmitter", // Helpful when debug is true
   debug: true, // Defaults to false. If true, will console.log emits, listenings and handles
-  parent: ParentEmitter, // Optionally pass a parent, each emit propagates to the parent
+  parent: ParentEmitter // Optionally pass a parent, each emit propagates to the parent
 });
 ```
 
 Note: We don't recommend using the global emitter at all, unless your application contains other rendering engines than React (yes, this can happen, especially for people migrating from a statically rendered PHP app).
 
-## React Helpers
-
-#### mole
-
-Creating a molecule functional style:
+## React Hooks
 
 ```jsx
-import { mole } from 'react-molecule';
+import {
+  useMolecule,
+  useAgent,
+  useAgentConfig,
+  useAgentStore,
+  useStore,
+  useRegistry,
+  useEmitter,
+  useConfig
+} from "react-molecule";
 
-const Wrapped = mole(() => MoleculeOptions)(Page);
+function Component() {
+  const molecule = useMolecule();
+  const moleculeConfig = useConfig();
+  const moleculeStore = useStore();
+  const moleculeRegistry = useRegistry();
+  const moleculeEmitter = useEmitter();
+
+  const loaderAgent = useAgent("loader"); // agent name
+  const loaderAgentConfig = useAgentConfig("loader");
+  const loaderAgentStore = useAgentConfig("loader");
+}
 ```
+
+#### useAgent
+
+```jsx
+const agent = useAgent("loader");
+```
+
+## React HOCs
 
 #### withMolecule
 
 Access the enveloping molecule in a (deeply) nested child. Receives `molecule` inside props.
 
 ```jsx
-import { withMolecule } from 'react-molecule';
+import { withMolecule } from "react-molecule";
 
 export default withMolecule(UserList);
 ```
@@ -213,7 +232,7 @@ export default withAgent('loader', 'loader')(UserList);
 Passing the molecule via functional children:
 
 ```jsx
-import { WithMolecule } from 'react-molecule';
+import { WithMolecule } from "react-molecule";
 
 <WithMolecule>{molecule => <UserList molecule={molecule} />}</WithMolecule>;
 ```
@@ -223,7 +242,7 @@ import { WithMolecule } from 'react-molecule';
 Passing `{agent, molecule}` via functional children:
 
 ```jsx
-import { WithAgent } from 'react-molecule';
+import { WithAgent } from "react-molecule";
 
 <WithAgent name="loader">
   {({ agent, molecule }) => <UserList agent={agent} />}
@@ -233,7 +252,7 @@ import { WithAgent } from 'react-molecule';
 Optionally, you could provide `asName` prop to `WithAgent`:
 
 ```jsx
-import { WithAgent } from 'react-molecule';
+import { WithAgent } from "react-molecule";
 
 <WithAgent name="loader" asName="loader">
   {({ loader, molecule }) => <UserList agent={loader} />}
