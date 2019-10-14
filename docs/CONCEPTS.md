@@ -1,37 +1,38 @@
 # React Molecule - Concepts
 
-Introducing the concepts of this framework, this is the first phase into understanding the molecule.
+We have several concepts we need to explore:
+
+- Molecule
+- Agent
+- Registry
 
 ## Molecule
 
-We create a smart object which we call `molecule` that can be passed and accessed by the children.
+The `molecule` is a smart object that is acts as a logic encapsulator (with agents), a communication channel (with events) and a single source of truth.
 
 ```jsx
 import { molecule, useMolecule } from "react-molecule";
 
-const UserPage = molecule()(() => {
-  return (
-    <>
-      <SearchBar />
-      <UserList />
-    </>
-  );
-};
+const UserPage = molecule()(() => <UserList />);
 
 const UserList = () => {
   const molecule = useMolecule();
-  // getting access to that object
-}
+  // getting access to that smart object
+};
 ```
 
-By default molecule contains an `EventEmitter` stored in `molecule.emitter` in which all children can interact with each other.
+By default molecule contains an `EventEmitter` (npm: [eventemitter3](https://github.com/primus/eventemitter3)) and we can attach and emit events on it directly:
+
+```js
+molecule.emit("searching", value);
+molecule.on("searching", value => {});
+```
 
 ## Agent
 
-Agents are the way to interact with the outside world. (Making API calls, modifying client-state, etc.)
-The principle behind them is that we can have these services that are fully independent of the component and they can contain logic for modifying components.
+Agents are the way to interact with the outside world. (making API calls, modifying client-state, processing molecule events, etc)
 
-For example, an Agent would be a service that loads data from a REST-API endpoint:
+For example, you have a function that loads data from a REST API, let's put it inside an Agent.
 
 ```js
 import { Agent } from "react-molecule";
@@ -61,11 +62,13 @@ Now you can safely call the agent inside `UserList`, and expect a response.
 
 ```jsx
 const UserList = () => {
-  const loader = useAgent("loadUsers");
+  const loader = useAgent("loader");
   const [users, setUsers] = useState([]);
 
   // this runs only once when the component is first mounted
   useEffect(() => {
+    // This example show how we use Agents as simple units of logic
+    // We don't really see here how they are tied with the molecule
     loader.loadUsers().then(users => setUsers);
   });
 
@@ -73,30 +76,67 @@ const UserList = () => {
 };
 ```
 
-But why do we go to such extent to just pass a service that calls a method, can't we just pass it directly?
-
-Yes, we could do that but the main advantage is that our `Agents` get access to the `molecule`, thus enabling communication
-with the Components inside the Molecule.
+Let's see how agents can interact inside molecule context:
 
 ```js
-import { Agent } from 'react-molecule';
+import { Agent } from "react-molecule";
+import { observable } from "mobx";
 
 class UserLoader extends Agent {
+  static events = {
+    loaded: "userLoader::loaded"
+    search: "userLoader::search"
+  };
+
+  store = observable({
+    users: []
+  });
+
   init() {
     const { molecule } = this;
 
-    molecule.on('search', () => {
-      fetch('https://jsonplaceholder.typicode.com/users')
-        .then(response => response.json())
-        .then(users => molecule.emit(`data::loaded`, users);
-    })
+    this.loadUsers();
+
+    // Note: this event is at agent level, not at the whole molecule level
+    this.on(UserLoader.events.search, search => {
+      this.loadUsers(search);
+    });
+  }
+
+  loadUsers(search) {
+    return fetch(`https://jsonplaceholder.typicode.com/users?q=${search}`)
+      .then(response => response.json())
+      .then(users => {
+        this.store.users = users;
+
+        // Other agents, or components can listen to this event, and act upon it
+        molecule.emit(UserLoader.events.loaded, users);
+      });
   }
 }
 ```
 
+So because I have an `observable`, I can easily wrap an observer that would render the users from the agent:
+
+```jsx
+import { useAgentStore, useEmitter, useAgent } from "react-molecule";
+import { observer } from "mobx-react";
+
+const UserList = observer(() => {
+  const { users } = useAgentStore("loader");
+  const agent = useAgent();
+  return (
+    <>
+      <input onKeyUp={e => agent.emit(UserLoader.events.search, e.target.value)}>
+      {users.map(u => '...')}
+    </>
+  );
+});
+```
+
 This means, that my children or other agents, can listen to this `molecule-level event` and react to it accordingly.
 
-Agent also support configuration:
+Agent also support configuration when passing it to the molecule constructor options:
 
 ```jsx
 const UserPage = molecule(
@@ -104,14 +144,13 @@ const UserPage = molecule(
     agents: {
       loader: RESTAPILoader.factory({
         endpoint: "http://rest.me/users"
+        // And inside `RESTAPILoader` you can access this via `this.config.endpoint` inside your agent's functions.
       })
     }
   }),
   () => <UserList />
 );
 ```
-
-And inside `RESTAPILoader` you can access this via `this.config.endpoint` inside your functions.
 
 ## Agent Lifecycle
 
@@ -341,6 +380,6 @@ molecule(
 
 ## Events Clean-up
 
-You do not have to worry about `deserialising` your events, they are automatically cleaned, at `Agent` and `Molecule` level when the molecule gets unmounted. However, if you have children, that listen of events of `Agent` and `Molecule`, you'll have to handle the cleanup yourself if they can get unmounted while the molecule is still alive (mounted).
+You do not have to worry about `deregistering` your event listeners, they are automatically cleaned, at `Agent` and `Molecule` level when the molecule gets unmounted. However, if you have children, that listen of events of `Agent` and `Molecule`, you'll have to handle the cleanup yourself if they can get unmounted while the molecule is still alive (mounted).
 
 ## [Back to Table of Contents](./index.md)

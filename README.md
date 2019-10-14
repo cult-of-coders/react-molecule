@@ -11,11 +11,21 @@ Molecule has been built to allow creation of smart, hackable react libraries. Mo
 - Enables component overriding via registry
 - Ability to manage a reactive store, isolated from your components
 
-An example where `react-molecule` has been efficiently used is here: https://www.npmjs.com/package/easify.
+An example where `react-molecule` has been efficiently used is here: https://www.npmjs.com/package/easify
 
 ## Install
 
 `npm install --save react-molecule`
+
+```js
+import { molecule, useMolecule } from "react-molecule";
+const Page = molecule()(PageComponent);
+
+const PageComponent = () => {
+  const molecule = useMolecule();
+  // Use it
+};
+```
 
 ## Example
 
