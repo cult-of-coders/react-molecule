@@ -1,6 +1,6 @@
 {
   "name": "react-molecule",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "React Molecule is a bridge between components",
   "main": "dist/index.js",
   "repository": {
